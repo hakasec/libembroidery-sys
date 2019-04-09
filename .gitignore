@@ -4,3 +4,6 @@ Cargo.lock
 
 # ignore changes to libembroidery
 libembroidery/**/*
+
+# ignore .vscode config
+.vscode/
