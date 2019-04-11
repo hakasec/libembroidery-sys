@@ -2,6 +2,8 @@ extern crate bindgen;
 
 use std::process::Command;
 use std::collections::HashSet;
+use std::path::Path;
+use std::env;
 
 // IgnoreMacros courtesy of stillinbeta:
 // https://github.com/rust-lang/rust-bindgen/issues/687#issuecomment-450750547
@@ -18,22 +20,27 @@ impl bindgen::callbacks::ParseCallbacks for IgnoreMacros {
     }
 }
 
-fn build_libembroidery() {
+fn build_libembroidery(p: &str) {
     Command::new("qmake")
-        .current_dir("./libembroidery")
+        .current_dir(p)
         .output()
         .expect("Failed to build libembroidery: qmake");
     Command::new("make")
-        .current_dir("./libembroidery")
+        .current_dir(p)
         .output()
         .expect("Failed to build libembroider: make");
 }
 
 fn main() {
-    build_libembroidery();
+    let libembroidery_path =
+        Path::new(&env::var("CARGO_MANIFEST_DIR").unwrap())
+        .join("libembroidery");
+
+    build_libembroidery(libembroidery_path.to_str().unwrap());
     println!("Built libembroidery!");
 
-    println!("cargo:rustc-link-search=./libembroidery/lib");
+    println!("cargo:rustc-link-search={}",
+             libembroidery_path.join("lib").to_str().unwrap());
     println!("cargo:rustc-link-lib=embroidery");
 
     // ignore oddly definited enums in math.h
@@ -56,6 +63,6 @@ fn main() {
             .parse_callbacks(Box::new(ignored_macros))
         .generate()
             .expect("Failed to build!")
-        .write_to_file("./src/bindings.rs")
+        .write_to_file("src/bindings.rs")
             .expect("Failed to write bindings!");
 }
