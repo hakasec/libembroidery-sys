@@ -28,7 +28,7 @@ fn build_libembroidery(p: &str) {
     Command::new("make")
         .current_dir(p)
         .output()
-        .expect("Failed to build libembroider: make");
+        .expect("Failed to build libembroidery: make");
 }
 
 fn main() {
@@ -41,7 +41,7 @@ fn main() {
 
     println!("cargo:rustc-link-search={}",
              libembroidery_path.join("lib").to_str().unwrap());
-    println!("cargo:rustc-link-lib=embroidery");
+    println!("cargo:rustc-link-lib=static=embroidery");
 
     // ignore oddly definited enums in math.h
     let ignored_macros = IgnoreMacros(
