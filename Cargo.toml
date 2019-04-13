@@ -1,9 +1,9 @@
 [package]
 name = "libembroidery-sys"
-version = "0.1.0"
+version = "0.1.1"
 description = "Rust FFI bindings for libembroidery"
 readme = "README.md"
-license = "MIT"
+license-file = "LICENCE"
 authors = ["Declan Soper <soperdeclan@gmail.com>"]
 repository = "https://github.com/hakasec/libembroidery-sys"
 edition = "2018"
