@@ -7,3 +7,6 @@ libembroidery/**/*
 
 # ignore .vscode config
 .vscode/
+
+# ignore intellij config
+.idea/
